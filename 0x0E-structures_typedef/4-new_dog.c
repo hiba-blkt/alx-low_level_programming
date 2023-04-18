@@ -1,83 +1,51 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include "dog.h"
-
 /**
- * _copy  -   Make a copy of passed in argument
- * @src:      Data to make copy of
- * Return:    Pointer
+ * new_dog - entry point
+ * @name: size of triangle
+ * @age: size of triangle
+ * @owner: size of triangle
+ * Description: --
+ * Return: --
  */
-
-char *_copy(char *src)
-{
-	char *ptr;
-	int i, len;
-
-	if (src == NULL)
-	{
-		return (NULL);
-	}
-
-	for (len = 0; src[len] != '\0'; len++)
-		;
-
-	ptr = malloc(sizeof(char) * (len + 1));
-
-	if (ptr == NULL)
-	{
-		return (NULL);
-	}
-
-	for (i = 0; src[i] != '\0'; i++)
-	{
-		ptr[i] = src[i];
-	}
-
-	ptr[i] = '\0';
-	return (ptr);
-}
-
-/**
- * new_dog     - Create a new dog variable
- * @name:        Name of the dog
- * @age:         Age of the dog
- * @owner:       Owner of the dog
- * Return:       Pointer to new dog variable
- */
-
 dog_t *new_dog(char *name, float age, char *owner)
 {
-	dog_t *snoopie;
-	char *new_name, *new_owner;
+	dog_t *dog;
+	int i;
+	int ownerL = 0;
+	int nameL = 0;
 
-	if (name == NULL || owner == NULL)
+	while (name[nameL])
+		nameL++;
+	while (owner[ownerL])
+		ownerL++;
+	dog = malloc(sizeof(dog_t));
+	if (dog == NULL)
+		return (NULL);
+	dog->name = malloc(sizeof(char) * (nameL + 1));
+	if (dog->name == NULL)
 	{
+		free(dog);
 		return (NULL);
 	}
-
-	snoopie = malloc(sizeof(dog_t));
-	if (snoopie == NULL)
+	for (i = 0; name[i] != '\0'; i++)
 	{
+		dog->name[i] = name[i];
+	}
+	dog->name[i] = '\0';
+	dog->owner = malloc(sizeof(char) * (ownerL + 1));
+	if (dog->owner == NULL)
+	{
+		free(dog->name);
+		free(dog);
 		return (NULL);
 	}
-
-	new_name = _copy(name);
-	if (new_name == NULL)
+	for (i = 0; owner[i] != '\0'; i++)
 	{
-		free(snoopie);
-		return (NULL);
+		dog->owner[i] = owner[i];
 	}
-	(*snoopie).name = new_name;
-
-	(*snoopie).age = age;
-
-	new_owner = _copy(owner);
-	if (new_owner == NULL)
-	{
-		free((*snoopie).name);
-		free(snoopie);
-		return (NULL);
-	}
-	(*snoopie).owner = new_owner;
-
-	return (snoopie);
+	dog->owner[i] = '\0';
+	dog->age = age;
+	return (dog);
 }
